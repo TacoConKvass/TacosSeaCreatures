@@ -1,0 +1,3 @@
+displayName = Sea Creatures
+author = TacoConKvass
+version = 0.1
