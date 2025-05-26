@@ -30,23 +30,25 @@ A Terraria mod made for Aphrofluff, adding several sea creatures for their "stra
 - [ ] Alligators
   - Aggressive
     - Swim around right below the waterline
-    - Bite
-    - Ram
-  - Drops:
-  - Stats:
+    - Bite 40 DMG
+    - Ram 40 DMG
+  - Drops: Gold x1; 2% chance - Shrimp Po' Boy
+  - Stats: 100HP
 ### Items
 - [ ] Raw Fish
   - Cookable at the Cooking Pot
 - [ ] Crab Meat
   - Cookable at the Cooking Pot
-- [ ] Ship Mount
+- [ ] Raft Mount
   - Float on water
   - Recipe: Wood x100; Rope x50; Workbench;
 ### Mechanic changes
 - [ ] Slimes
   - Don't spawn on the ground
-  - Spawn on the water surface inside of bubbles
-  - Bubble pops when bumping into the player or colliding with the player
+  - Don't fall from the sky
+  - Spawn above water surface inside of bubbles
+  - Bubble pops when bumping into the player or colliding with tiles
+  - Bubble moves towards the player, bobbing up and down
 ## Licensing
 The code is provided under the GNU GPL 3.0 License
 
