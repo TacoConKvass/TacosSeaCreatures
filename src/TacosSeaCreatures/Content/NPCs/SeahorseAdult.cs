@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using Terraria;
 using Terraria.ModLoader;
 
 namespace TacosSeaCreatures.NPCs;
@@ -11,6 +12,7 @@ public class SeahorseAdult : ModNPC {
 		NPC.damage = 4;
 
 		NPC.noGravity = true;
+		NPC.value = Item.buyPrice(silver: 1);
 	}
 
 	public SeahorseAction State = SeahorseAction.Idle;

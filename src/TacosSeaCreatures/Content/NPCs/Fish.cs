@@ -13,6 +13,7 @@ public class Fish : ModNPC {
 		NPC.damage = 4;
 
 		NPC.noGravity = true;
+		NPC.value = Item.buyPrice(copper: 2);
 	}
 
 	public Rectangle VariantRect;
