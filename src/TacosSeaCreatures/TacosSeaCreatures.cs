@@ -8,7 +8,8 @@ public class TacosSeaCreatures : Mod {
 	public override IContentSource CreateDefaultContentSource() {
 		SmartContentSource source = new(base.CreateDefaultContentSource());
 
-		source.AddDirectoryRedirect("Content", "Assets");
+		source.AddDirectoryRedirect("Items", "Assets/Items");
+		source.AddDirectoryRedirect("NPCs", "Assets/NPCs");
 		return source;
 	}
 }
