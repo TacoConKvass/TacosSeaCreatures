@@ -6,7 +6,7 @@ Thanks to:
 
 ## Planned content
 ### NPCs
-- [ ] Fish
+- [x] Fish
   - 5 visual variants
   - Passive
     - Swim around
