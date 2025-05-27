@@ -16,11 +16,11 @@ public class SeahorseAdult : ModNPC {
 		NPC.value = Item.buyPrice(silver: 1);
 	}
 
-	public SeahorseAction State { 
+	public SeahorseAction State {
 		get => (SeahorseAction)NPC.ai[0];
 		set => NPC.ai[0] = (int)value;
 	}
-	
+
 	public Rectangle VariantRect;
 	public const int VariantCount = 0;
 

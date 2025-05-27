@@ -8,14 +8,14 @@ namespace TacosSeaCreatures.Items;
 public class RaftMount_Item : ModItem {
 	public override void SetDefaults() {
 		Item.Size = new Vector2(20, 20);
-		
+
 		Item.useTime = 20;
 		Item.useAnimation = 20;
 		Item.useStyle = ItemUseStyleID.Swing;
 		Item.UseSound = SoundID.Item79;
 
 		Item.value = Item.buyPrice(silver: 8);
-		Item.rare = ItemRarityID.Green; 
+		Item.rare = ItemRarityID.Green;
 		Item.mountType = ModContent.MountType<RaftMount>();
 	}
 
@@ -28,4 +28,4 @@ public class RaftMount_Item : ModItem {
 	}
 }
 
-public class RaftMount : ModMount {}
+public class RaftMount : ModMount { }
