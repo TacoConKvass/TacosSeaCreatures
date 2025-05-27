@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Terraria;
+using Terraria.DataStructures;
 using Terraria.ModLoader;
 
 namespace TacosSeaCreatures.NPCs;
@@ -15,7 +16,18 @@ public class SeahorseAdult : ModNPC {
 		NPC.value = Item.buyPrice(silver: 1);
 	}
 
-	public SeahorseAction State = SeahorseAction.Idle;
+	public SeahorseAction State { 
+		get => (SeahorseAction)NPC.ai[0];
+		set => NPC.ai[0] = (int)value;
+	}
+	
+	public Rectangle VariantRect;
+	public const int VariantCount = 0;
+
+	public override void OnSpawn(IEntitySource source) {
+		int variant = Main.rand.Next(0, VariantCount);
+		VariantRect = new Rectangle(variant * NPC.width, 0, NPC.width, NPC.height);
+	}
 
 	public override void AI() {
 		switch (State) {
@@ -37,7 +49,9 @@ public class SeahorseAdult : ModNPC {
 
 	public void Shoot() { }
 
-	public override void FindFrame(int frameHeight) { }
+	public override void FindFrame(int frameHeight) {
+		NPC.frame = VariantRect;
+	}
 }
 
 public enum SeahorseAction {
