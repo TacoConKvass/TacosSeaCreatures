@@ -1,1 +1,24 @@
+Items: {
+	CrabMeat: {
+		DisplayName: Crab Meat
+		Tooltip: ""
+	}
 
+	RaftMount_Item: {
+		DisplayName: Raft Mount_ Item
+		Tooltip: ""
+	}
+
+	RawFish: {
+		DisplayName: Raw Fish
+		Tooltip: ""
+	}
+}
+
+NPCs: {
+	Alligator.DisplayName: Alligator
+	Crab.DisplayName: Crab
+	Fish.DisplayName: Fish
+	SeahorseAdult.DisplayName: Seahorse Adult
+	SeahorseBaby.DisplayName: Seahorse Baby
+}
