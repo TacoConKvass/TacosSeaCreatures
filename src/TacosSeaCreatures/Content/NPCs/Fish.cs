@@ -50,6 +50,12 @@ public class Fish : ModNPC {
 
 		if (!Collision.CanHitLine(NPC.Center, 3, 3, ahead, 3, 3) || Main.tile[tile].LiquidAmount == 0) 
 			NPC.rotation += .015f * 3;
+
+		Vector2 direction = NPC.Center.DirectionTo(Main.player[NPC.FindClosestPlayer(out float distance)].Center);
+		if (distance < 8 * 16) {
+			NPC.velocity.Y += direction.Y * -.5f;
+			NPC.rotation = -direction.ToRotation();
+		}
 	}
 
 	public override void FindFrame(int frameHeight) {
