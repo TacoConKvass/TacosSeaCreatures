@@ -1,6 +1,9 @@
 ## TacosSeaCreatures
 A Terraria mod made for Aphrofluff, adding several sea creatures for their "stranded on an island" video
 
+Thanks to:
+- steviegt6 / tomat - SmartContentSource implementation
+
 ## Planned content
 ### NPCs
 - [ ] Fish
