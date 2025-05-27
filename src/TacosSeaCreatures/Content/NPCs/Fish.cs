@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 
-namespace TacosSeaCreatures;
+namespace TacosSeaCreatures.NPCs;
 
 public class Fish : ModNPC {
 	public override void SetDefaults() {

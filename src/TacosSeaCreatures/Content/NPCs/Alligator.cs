@@ -3,7 +3,7 @@ using Terraria;
 using Terraria.DataStructures;
 using Terraria.ModLoader;
 
-namespace TacosSeaCreatures;
+namespace TacosSeaCreatures.NPCs;
 
 public class Alligator : ModNPC {
 	public override void SetDefaults() {
