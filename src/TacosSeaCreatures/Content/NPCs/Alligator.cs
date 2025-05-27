@@ -8,7 +8,7 @@ namespace TacosSeaCreatures;
 public class Alligator : ModNPC {
 	public override void SetDefaults() {
 		NPC.Size = new Vector2(50, 20);
-		
+
 		NPC.lifeMax = 100;
 		NPC.damage = 40;
 
@@ -16,12 +16,12 @@ public class Alligator : ModNPC {
 		NPC.value = Item.buyPrice(gold: 1);
 	}
 
-	public AlligatorAction State { 
-		get => (AlligatorAction)NPC.ai[0]; 
-		set => NPC.ai[0] = (int)value; 
+	public AlligatorAction State {
+		get => (AlligatorAction)NPC.ai[0];
+		set => NPC.ai[0] = (int)value;
 	}
 
-    public override void OnSpawn(IEntitySource source) {
+	public override void OnSpawn(IEntitySource source) {
 		State = AlligatorAction.Idle;
 	}
 
@@ -45,9 +45,9 @@ public class Alligator : ModNPC {
 	public void Idle() { }
 
 	public void Chase() { }
-	
+
 	public void Ram() { }
-	
+
 	public void Bite() { }
 
 	public override void FindFrame(int frameHeight) { }
