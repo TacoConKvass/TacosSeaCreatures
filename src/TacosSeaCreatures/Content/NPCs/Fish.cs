@@ -1,9 +1,10 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
+using TacosSeaCreatures.Items;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ModLoader;
 
 namespace TacosSeaCreatures.NPCs;
@@ -56,6 +57,10 @@ public class Fish : ModNPC {
 			NPC.velocity.Y += direction.Y * -.5f;
 			NPC.rotation = -direction.ToRotation();
 		}
+	}
+
+	public override void ModifyNPCLoot(NPCLoot npcLoot) {
+		npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<RawFish>()));
 	}
 
 	public override void FindFrame(int frameHeight) {
