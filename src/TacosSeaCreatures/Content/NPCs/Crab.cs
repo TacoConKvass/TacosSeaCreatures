@@ -9,8 +9,7 @@ public class Crab : ModNPC {
 	public override void SetDefaults() {
 		NPC.Size = new Vector2(20, 30);
 
-		NPC.lifeMax = 40;
-		NPC.damage = 4;
+		NPC.lifeMax = 90;
 
 		NPC.noGravity = true;
 		NPC.value = Item.buyPrice(copper: 2);
