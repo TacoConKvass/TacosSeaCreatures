@@ -10,7 +10,7 @@ public enum Direction : SByte {
 }
 
 public static class DirectionExtension {
-	public static Direction Reverse(this Direction direction) {
+	public static Direction Reversed(this Direction direction) {
 		return (Direction)((int)direction * -1);
 	}
 }

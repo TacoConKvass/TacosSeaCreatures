@@ -37,7 +37,7 @@ public class Fish : ModNPC {
 		Timer++;
 		Timer %= 60;
 		if ((int)Timer == 0) {
-			Bobbing = Bobbing.Reverse();
+			Bobbing = Bobbing.Reversed();
 		}
 
 		NPC.rotation -= (int)Bobbing * .015f;
