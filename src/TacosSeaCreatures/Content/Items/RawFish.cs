@@ -10,6 +10,7 @@ public class RawFish : ModItem {
 		Item.Size = new Vector2(20, 20);
 
 		Item.value = Item.buyPrice(copper: 3);
+		Item.maxStack = Item.CommonMaxStack;
 	}
 
 	public override void AddRecipes() {
