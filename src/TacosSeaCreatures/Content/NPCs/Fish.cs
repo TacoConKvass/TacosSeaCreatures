@@ -51,12 +51,20 @@ public class Fish : ModNPC {
 		Point tile = ((NPC.Center + (normalizedVelocity * 8 * 16)) / 16).ToPoint();
 
 		if (!Collision.CanHitLine(NPC.Center, 3, 3, ahead, 3, 3) || Main.tile[tile].LiquidAmount == 0) 
-			NPC.rotation += .015f * 3;
+			NPC.rotation += .015f * 2;
 
 		Vector2 direction = NPC.Center.DirectionTo(Main.player[NPC.FindClosestPlayer(out float distance)].Center);
-		if (distance < 8 * 16 && NPC.wet) {
-			NPC.velocity -= direction * .5f;
-			NPC.rotation = MathHelper.Lerp(NPC.rotation, NPC.velocity.ToRotation(), .01f);
+		if (distance < 10 * 16 && NPC.wet) {
+			if (NPC.velocity.X > 0 && direction.X > 0) NPC.rotation += .015f * (direction.Y > 0 ? -1 : 1);
+			if (NPC.velocity.X < 0 && direction.X < 0) NPC.rotation += .015f * (direction.Y > 0 ? 1 : -1);
+			NPC.velocity.Normalize();
+			NPC.velocity *= 4;
+		}
+		if (distance < 3 * 16 && NPC.wet) {
+			NPC.velocity -= direction;
+			NPC.velocity.Normalize();
+			NPC.velocity *= 4;
+			NPC.rotation = NPC.velocity.ToRotation() - MathHelper.PiOver4;
 		}
 	}
 
