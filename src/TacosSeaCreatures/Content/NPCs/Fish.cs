@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TacosSeaCreatures.Core;
 using TacosSeaCreatures.Items;
 using Terraria;
 using Terraria.DataStructures;
@@ -25,7 +26,7 @@ public class Fish : ModNPC {
 	public const int VariantCount = 0;
 	
 	public ref float Timer => ref NPC.ai[0];
-	public int BobbingDirection = 1;
+	public Direction Bobbing = Direction.Up;
 
 	public override void OnSpawn(IEntitySource source) {
 		int variant = Main.rand.Next(0, VariantCount);
@@ -36,10 +37,10 @@ public class Fish : ModNPC {
 		Timer++;
 		Timer %= 60;
 		if ((int)Timer == 0) {
-			BobbingDirection *= -1;
+			Bobbing = Bobbing.Reverse();
 		}
 
-		NPC.rotation -= BobbingDirection * .015f;
+		NPC.rotation -= (int)Bobbing * .015f;
 
 		NPC.velocity += Vector2.One.RotatedBy(NPC.rotation);
 		NPC.velocity.Normalize();
