@@ -53,9 +53,9 @@ public class Fish : ModNPC {
 			NPC.rotation += .015f * 3;
 
 		Vector2 direction = NPC.Center.DirectionTo(Main.player[NPC.FindClosestPlayer(out float distance)].Center);
-		if (distance < 8 * 16) {
-			NPC.velocity.Y += direction.Y * -.5f;
-			NPC.rotation = -direction.ToRotation();
+		if (distance < 8 * 16 && NPC.wet) {
+			NPC.velocity -= direction * .5f;
+			NPC.rotation = MathHelper.Lerp(NPC.rotation, NPC.velocity.ToRotation(), .01f);
 		}
 	}
 
