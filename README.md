@@ -12,12 +12,12 @@ Thanks to:
     - Swim around
   - Drops: Raw Fish x1; Copper x2;
   - Stats: 20HP
-- [ ] Crabs
+- [x] Crabs
   - Passive
     - Walk around
   - Drops: Crab Meat x1; Silver x2;
   - Stats: 90HP
-- [ ] Seahorses
+- [x] Seahorses
   - 3 visual variants
   - Aggressive
     - Swim around
