@@ -23,14 +23,14 @@ public class Fish : ModNPC {
 	}
 
 	public Rectangle VariantRect;
-	public const int VariantCount = 0;
+	internal static int VariantCount = 0;
 	
 	public ref float Timer => ref NPC.ai[0];
 	public Direction Bobbing = Direction.Up;
 
-	public const int BOBBING_TIMER = 60;
-	public const float TURN_RATE = .15f;
-	public const int SPEED = 4;
+	internal static int BOBBING_TIMER = 60;
+	internal static float TURN_RATE = .015f;
+	internal static int SPEED = 4;
 
 	public override void OnSpawn(IEntitySource source) {
 		int variant = Main.rand.Next(0, VariantCount);
@@ -55,7 +55,7 @@ public class Fish : ModNPC {
 		Point tile = (NPC.Center + (normalizedVelocity * 8 * Consts.TILE_SIZE)).ToTileCoordinates();
 
 		if (!Collision.CanHitLine(NPC.Center, 3, 3, ahead, 3, 3) || Main.tile[tile].LiquidAmount == 0) 
-			NPC.rotation += TURN_RATE * 2;
+			NPC.rotation += TURN_RATE * 8;
 
 		Vector2 direction = NPC.Center.DirectionTo(Main.player[NPC.FindClosestPlayer(out float distance)].Center);
 		if (distance < 10 * Consts.TILE_SIZE && NPC.wet) {
