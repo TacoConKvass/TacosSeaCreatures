@@ -22,3 +22,5 @@ NPCs: {
 	SeahorseAdult.DisplayName: Seahorse Adult
 	SeahorseBaby.DisplayName: Seahorse Baby
 }
+
+Projectiles.Bubble.DisplayName: Bubble
