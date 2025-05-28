@@ -28,6 +28,10 @@ public class Fish : ModNPC {
 	public ref float Timer => ref NPC.ai[0];
 	public Direction Bobbing = Direction.Up;
 
+	public const int BOBBING_TIMER = 60;
+	public const float TURN_RATE = .15f;
+	public const int SPEED = 4;
+
 	public override void OnSpawn(IEntitySource source) {
 		int variant = Main.rand.Next(0, VariantCount);
 		VariantRect = new Rectangle(variant * NPC.width, 0, NPC.width, NPC.height);
@@ -35,35 +39,35 @@ public class Fish : ModNPC {
 
 	public override void AI() {
 		Timer++;
-		Timer %= 60;
+		Timer %= BOBBING_TIMER;
 		if ((int)Timer == 0) {
 			Bobbing = Bobbing.Reversed();
 		}
 
-		NPC.rotation -= (int)Bobbing * .015f;
+		NPC.rotation -= (int)Bobbing * TURN_RATE;
 
 		NPC.velocity += Vector2.One.RotatedBy(NPC.rotation);
 		NPC.velocity.Normalize();
-		NPC.velocity *= 4;
+		NPC.velocity *= SPEED;
 
 		Vector2 normalizedVelocity = NPC.velocity.SafeNormalize(Vector2.One);
-		Vector2 ahead = NPC.Center + (normalizedVelocity * 10 * 16);
-		Point tile = ((NPC.Center + (normalizedVelocity * 8 * 16)) / 16).ToPoint();
+		Vector2 ahead = NPC.Center + (normalizedVelocity * 10 * Consts.TILE_SIZE);
+		Point tile = (NPC.Center + (normalizedVelocity * 8 * Consts.TILE_SIZE)).ToTileCoordinates();
 
 		if (!Collision.CanHitLine(NPC.Center, 3, 3, ahead, 3, 3) || Main.tile[tile].LiquidAmount == 0) 
-			NPC.rotation += .015f * 2;
+			NPC.rotation += TURN_RATE * 2;
 
 		Vector2 direction = NPC.Center.DirectionTo(Main.player[NPC.FindClosestPlayer(out float distance)].Center);
-		if (distance < 10 * 16 && NPC.wet) {
-			if (NPC.velocity.X > 0 && direction.X > 0) NPC.rotation += .015f * (direction.Y > 0 ? -1 : 1);
-			if (NPC.velocity.X < 0 && direction.X < 0) NPC.rotation += .015f * (direction.Y > 0 ? 1 : -1);
+		if (distance < 10 * Consts.TILE_SIZE && NPC.wet) {
+			if (NPC.velocity.X > 0 && direction.X > 0) NPC.rotation += TURN_RATE * (direction.Y > 0 ? -1 : 1);
+			if (NPC.velocity.X < 0 && direction.X < 0) NPC.rotation += TURN_RATE * (direction.Y > 0 ? 1 : -1);
 			NPC.velocity.Normalize();
-			NPC.velocity *= 4;
+			NPC.velocity *= SPEED;
 		}
-		if (distance < 3 * 16 && NPC.wet) {
+		if (distance < 3 * Consts.TILE_SIZE && NPC.wet) {
 			NPC.velocity -= direction;
 			NPC.velocity.Normalize();
-			NPC.velocity *= 4;
+			NPC.velocity *= SPEED;
 			NPC.rotation = NPC.velocity.ToRotation() - MathHelper.PiOver4;
 		}
 	}
