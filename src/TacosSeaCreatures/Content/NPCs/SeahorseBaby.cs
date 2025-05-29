@@ -1,7 +1,4 @@
-
-using Microsoft.CodeAnalysis.FlowAnalysis;
 using Microsoft.Xna.Framework;
-using System.Net.Http.Headers;
 using TacosSeaCreatures.Core;
 using Terraria;
 using Terraria.DataStructures;
@@ -81,5 +78,9 @@ public class SeahorseBaby : ModNPC {
 			if (Main.netMode != NetmodeID.MultiplayerClient)
 				(parent.ModNPC as SeahorseAdult).AttachedBabies -= 1;
 		}
+	}
+
+	public override void FindFrame(int frameHeight) {
+		NPC.frame = new Rectangle(0, 0, NPC.width, NPC.height);
 	}
 }
