@@ -29,7 +29,7 @@ public class SeahorseBaby : ModNPC {
 		float distance = float.MaxValue;
 		NPC.target = -1;
 		foreach (NPC npc in Main.ActiveNPCs) {
-			if (npc.ModNPC is SeahorseAdult adult && NPC.Center.DistanceSQ(npc.Center) < distance && adult.AttachedBabies == 0 && Collision.CanHitLine(NPC.Center, 1, 1, npc.Center, 1, 1)) {
+			if (npc.ModNPC is SeahorseAdult adult && NPC.Center.DistanceSQ(npc.Center) < distance && adult.AttachedBabies == 0) {
 				NPC.target = npc.whoAmI;
 				if (Main.netMode != NetmodeID.MultiplayerClient)
 					adult.AttachedBabies += 1;
@@ -64,7 +64,7 @@ public class SeahorseBaby : ModNPC {
 			float distance = float.MaxValue;
 			NPC.target = -1;
 			foreach (NPC npc in Main.ActiveNPCs) {
-				if (npc.ModNPC is SeahorseAdult adult && NPC.Center.DistanceSQ(npc.Center) < distance && adult.AttachedBabies == 0 && Collision.CanHitLine(NPC.Center, 1, 1, npc.Center, 1, 1)) {
+				if (npc.ModNPC is SeahorseAdult adult && NPC.Center.DistanceSQ(npc.Center) < distance && adult.AttachedBabies == 0) {
 					NPC.target = npc.whoAmI;
 					if (Main.netMode != NetmodeID.MultiplayerClient)
 						adult.AttachedBabies += 1;
