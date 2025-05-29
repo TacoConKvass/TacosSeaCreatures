@@ -23,7 +23,9 @@ public class SeahorseBaby : ModNPC {
 	public Direction Bobbing = Direction.Up;
 	public Vector2 BobbingVector => new Vector2(0, (int)Bobbing);
 
-	internal const int BOBBING_TIMER = 60;
+	public const int BOBBING_TIMER = 60;
+	public const float TARGET_DISTANCE_FROM_PARENT = 2.5f * Consts.TILE_SIZE;
+	public const float FOLLOWING_BOBBING_OFFSET = 1.5f * Consts.TILE_SIZE;
 
 	public override void OnSpawn(IEntitySource source) {
 		float distance = float.MaxValue;
@@ -79,8 +81,8 @@ public class SeahorseBaby : ModNPC {
 	public void Following(NPC parent) {
 		Bobbing = (parent.ModNPC as SeahorseAdult).Bobbing;
 
-		Vector2 targetPosition = parent.Center + Vector2.UnitX * Consts.TILE_SIZE * 2.5f * parent.spriteDirection;
-		targetPosition -= BobbingVector * Consts.TILE_SIZE * 1.5f;
+		Vector2 targetPosition = parent.Center + Vector2.UnitX * TARGET_DISTANCE_FROM_PARENT * parent.spriteDirection;
+		targetPosition -= BobbingVector * FOLLOWING_BOBBING_OFFSET;
 		NPC.velocity = NPC.Center.DirectionTo(targetPosition) * parent.velocity.Length();
 	}
 
