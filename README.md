@@ -24,7 +24,7 @@ Thanks to:
     - Shoot bubbles
   - Drops: Silver x1;
   - Stats: 40HP, 4 DMG
-- [ ] Baby Seahorses
+- [x] Baby Seahorses
   - Passive
     - Swim around
     - Follow big Seahorse
