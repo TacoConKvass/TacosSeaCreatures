@@ -35,10 +35,12 @@ public class SeahorseAdult : ModNPC {
 		}
 	}
 
+	public ref float AttachedBabies => ref NPC.ai[3];
+
 	public Rectangle VariantRect;
 	internal const int VariantCount = 0;
 
-	public Direction Bobbing = Direction.Up;
+	public Direction Bobbing = Direction.Up;	
 
 	public Vector2 TargetPosition = Vector2.Zero;
 	
@@ -152,7 +154,7 @@ public class SeahorseAdult : ModNPC {
 			}
 		}
 
-		Timer %= 170;
+		Timer %= 180;
 	}
 
 	public override void FindFrame(int frameHeight) {
