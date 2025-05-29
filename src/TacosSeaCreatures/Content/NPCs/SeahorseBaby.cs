@@ -59,7 +59,19 @@ public class SeahorseBaby : ModNPC {
 	public void Alone() {
 		Timer++;
 		Timer %= BOBBING_TIMER;
-		if ((int)Timer % BOBBING_TIMER == 0) Bobbing = Bobbing.Reversed();
+		if ((int)Timer % BOBBING_TIMER == 0) {
+			Bobbing = Bobbing.Reversed();
+			float distance = float.MaxValue;
+			NPC.target = -1;
+			foreach (NPC npc in Main.ActiveNPCs) {
+				if (npc.ModNPC is SeahorseAdult adult && NPC.Center.DistanceSQ(npc.Center) < distance && adult.AttachedBabies == 0 && Collision.CanHitLine(NPC.Center, 1, 1, npc.Center, 1, 1)) {
+					NPC.target = npc.whoAmI;
+					if (Main.netMode != NetmodeID.MultiplayerClient)
+						adult.AttachedBabies += 1;
+					Bobbing = adult.Bobbing.Reversed();
+				}
+			}
+		}
 
 		NPC.velocity = BobbingVector;
 	}
@@ -67,7 +79,7 @@ public class SeahorseBaby : ModNPC {
 	public void Following(NPC parent) {
 		Bobbing = (parent.ModNPC as SeahorseAdult).Bobbing;
 
-		Vector2 targetPosition = parent.Center + Vector2.UnitX * Consts.TILE_SIZE * 4 * parent.spriteDirection;
+		Vector2 targetPosition = parent.Center + Vector2.UnitX * Consts.TILE_SIZE * 2.5f * parent.spriteDirection;
 		targetPosition -= BobbingVector * Consts.TILE_SIZE * 1.5f;
 		NPC.velocity = NPC.Center.DirectionTo(targetPosition) * parent.velocity.Length();
 	}
