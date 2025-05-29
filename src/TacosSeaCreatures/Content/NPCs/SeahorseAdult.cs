@@ -1,10 +1,8 @@
 using Microsoft.Xna.Framework;
-using System;
 using TacosSeaCreatures.Core;
 using TacosSeaCreatures.Projectiles;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
