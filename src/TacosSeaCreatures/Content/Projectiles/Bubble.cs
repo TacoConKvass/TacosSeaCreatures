@@ -21,10 +21,10 @@ public class Bubble : ModProjectile {
 			SoundEngine.PlaySound(SoundID.SplashWeak with { MaxInstances = 100 }, Projectile.Center);
 		}
 		Projectile.velocity.Y = MathHelper.Lerp(Projectile.velocity.Y, -8f, .02f);
+		Projectile.velocity.X = MathHelper.Lerp(Projectile.velocity.X, 0, .02f);
 	}
 
 	public override void OnKill(int timeLeft) {
-		// for (int i = 0; i < 5; i++)
 		Dust.NewDust(Projectile.Center, 1, 1, DustID.Water);
 		SoundEngine.PlaySound(SoundID.SplashWeak with { MaxInstances = 100 }, Projectile.Center);
 	}
