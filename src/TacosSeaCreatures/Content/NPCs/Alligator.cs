@@ -1,6 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.CodeDom;
 using TacosSeaCreatures.Core;
 using Terraria;
 using Terraria.DataStructures;
@@ -15,15 +14,15 @@ public class Alligator : ModNPC {
 		NPC.Size = new Vector2(95, 25);
 
 		NPC.lifeMax = 100;
-		
-		NPC.noGravity = true;
+
+		NPC.noGravity = false;
 		NPC.value = Item.buyPrice(gold: 1);
 	}
 
 	public AlligatorAction State {
 		get => (AlligatorAction)NPC.ai[0];
 		set {
-			Timer = 0;
+			if (State != value) Timer = 0;
 			NPC.ai[0] = (int)value;
 		}
 	}
@@ -40,121 +39,107 @@ public class Alligator : ModNPC {
 
 	public Direction Movement = Direction.Right;
 
-	public Point AboveWaterOffset = new Point(0, -3);
+	public Point AboveWaterOffset = new Point(0, -2);
 	public Vector2 WallCheckOffset = new Vector2(4, 0) * Consts.TILE_SIZE;
-
-	// public const float CHASE_TARGET_OFFSET = 4 * Consts.TILE_SIZE;
-
+	
 	public Vector2 RamTarget = Vector2.Zero;
 
-	public override void OnSpawn(IEntitySource source) {
-		State = AlligatorAction.Idle;
-		RNG = 1;
-	}
+	public static float CHASE_TRIGGER_DISTANCE_WET = 30 * Consts.TILE_SIZE;
+	public static float CHASE_TRIGGER_DISTANCE_DRY = 12 * Consts.TILE_SIZE;
+	public static float CHASE_DISENGAGE_DISTANCE_WET = 45 * Consts.TILE_SIZE;
+	public static float CHASE_DISENGAGE_DISTANCE_DRY = 20 * Consts.TILE_SIZE;
 
+	public override void OnSpawn(IEntitySource source) { RNG = 1; }
+		
 	public override void AI() {
-		if (!NPC.wet) {
-			NPC.noGravity = false;
-			NPC.GravityMultiplier *= 20;
-		}
-		else NPC.noGravity = true;
-
 		NPC.damage = 0;
-		if (Main.tile[NPC.Center.ToTileCoordinates() + AboveWaterOffset].LiquidAmount > 0) NPC.velocity -= Vector2.UnitY * 2;
+		State = State switch {
+			AlligatorAction.Idle => Idle(),
+			AlligatorAction.Chase => Chase(),
+			AlligatorAction.Ram => Ram(),
+			AlligatorAction.Bite => Bite(),
+			_ => UnrecognisedState()
+		};
 
-		switch (State) {
-			case AlligatorAction.Idle:
-				Idle();
-				break;
-			case AlligatorAction.Chase:
-				Chase();
-				break;
-			case AlligatorAction.Ram:
-				Ram();
-				break;
-			case AlligatorAction.Bite:
-				Bite();
-				break;
-		}
-
+		if (!NPC.wet) NPC.rotation = NPC.velocity.ToRotation();
+		else NPC.rotation = 0;
 		NPC.spriteDirection = NPC.velocity.X <= 0 ? 1 : -1;
 	}
 
-	public void Idle() {
+	public AlligatorAction Idle() {
+		if (!NPC.wet) return AlligatorAction.Idle;
+
 		Timer++;
-		if ((int)Timer % (int)(360 * RNG) == 0 || Main.tile[NPC.Center.ToTileCoordinates() + (new Vector2(4, 0) * Consts.TILE_SIZE * (int)Movement).ToTileCoordinates()].HasTile) {
+		if ((int)Timer % (int)(360 * RNG) == 0 || Main.tile[(NPC.Center + (WallCheckOffset * (int)Movement)).ToTileCoordinates()].HasTile) {
+			Timer = 0; 
 			RNG = Main.rand.NextFloat(1f, 4f);
-			Timer = 0;
 			Movement = Movement.Reversed();
 		}
 
-		NPC.velocity = Vector2.UnitX * 2.5f * (int)Movement;
+		NPC.velocity.X = 2.5f * (int)Movement;
 		if (Main.tile[NPC.Center.ToTileCoordinates() + AboveWaterOffset].LiquidAmount > 0) NPC.velocity -= Vector2.UnitY * 2;
 		
 		NPC.velocity.Normalize();
 		NPC.velocity *= 2.5f;
 
 		NPC.target = NPC.FindClosestPlayer(out float distance);
+		Player player = Main.player[NPC.target];
 
-		if (distance < 4 * Consts.TILE_SIZE) State = AlligatorAction.Bite; 
-		else if (distance < 30 * Consts.TILE_SIZE && Main.player[NPC.target].wet) State = AlligatorAction.Chase;
+		if ((distance < CHASE_TRIGGER_DISTANCE_WET && player.wet && Collision.CanHitLine(NPC.Center, 3, 3, player.Center, 3, 3)) || distance < CHASE_TRIGGER_DISTANCE_DRY) 
+			return AlligatorAction.Chase;
+
+		return AlligatorAction.Idle;
 	}
 
-	public void Chase() {
-		if (!NPC.HasValidTarget) {
-			State = AlligatorAction.Idle;
-			return;
+	public AlligatorAction Chase() {
+		Player player = Main.player[NPC.target];
+		float distance = NPC.Center.Distance(player.Center);
+		if (!NPC.HasValidTarget || distance > (player.wet ? CHASE_DISENGAGE_DISTANCE_WET : CHASE_DISENGAGE_DISTANCE_DRY)) 
+			return AlligatorAction.Idle;
+
+		NPC.velocity = NPC.Center.DirectionTo(player.Center) * 4;
+		if (distance < 10 * Consts.TILE_SIZE) {
+			RNG = Main.rand.NextFloat(1f);
+			if (RNG > .55f) return AlligatorAction.Ram;
+			return AlligatorAction.Bite;
 		}
+		return AlligatorAction.Chase;
+	}
+
+	public AlligatorAction Ram() {
+		Player player = Main.player[NPC.target];
+		float distance = NPC.Center.Distance(player.Center);
+
+		Main.NewText(RamTarget);
+		if (!NPC.HasValidTarget) return AlligatorAction.Idle;
+		if (distance > 20f * Consts.TILE_SIZE) return AlligatorAction.Chase;
+
+		if (NPC.wet) Timer++;
 		
-		Player target = Main.player[NPC.target];
-		if (target.Distance(NPC.Center) > 40 * Consts.TILE_SIZE) {
-			State = AlligatorAction.Idle;
-			return;
-		}
-
-		Movement = (target.Center.X < NPC.Center.X) ? Direction.Right : Direction.Left;
-
-		NPC.velocity = NPC.Center.DirectionTo(target.Center + Vector2.UnitX * 4.5f * Consts.TILE_SIZE * (int)Movement) * 3;
-		if (NPC.Center.Distance(target.Center) < 14 * Consts.TILE_SIZE && target.wet) State = AlligatorAction.Ram;
-	}
-
-	public void Ram() {
-		if (!NPC.HasValidTarget || !Main.player[NPC.target].wet) {
-			State = AlligatorAction.Idle;
-			return;
-		}
-		Player target = Main.player[NPC.target];
-		Timer++;
-		if ((int)Timer < 45) {
-			NPC.velocity = Vector2.Zero;
-			float distance = NPC.Center.Distance(target.Center);
-
-			RamTarget = target.Center + NPC.DirectionTo(target.Center) * Consts.TILE_SIZE * 14;
-			return;
+		if (Timer < 45) {
+			if (NPC.wet) NPC.velocity = Vector2.Zero;
+			Vector2 target = NPC.Center.DirectionTo(player.Center);
+			RamTarget = player.Center + (target * 15 * Consts.TILE_SIZE);
+			return AlligatorAction.Ram;
 		}
 
 		NPC.damage = 40;
+		float distanceToTarget = NPC.Center.Distance(RamTarget);
 
-		NPC.velocity = NPC.Center.DirectionTo(RamTarget) * 11;
-		Movement = NPC.velocity.X > 0 ? Direction.Right : Direction.Left;
-		if (NPC.Center.Distance(RamTarget) <= Consts.TILE_SIZE * 2 || (Timer - 45) > 240 || Collision.FindCollisionTile((int)Movement, NPC.Center, 2, NPC.width, NPC.height).Count != 0) {
-			State = AlligatorAction.Idle;
-			return;
-		}
+		Vector2 direction = NPC.Center.DirectionTo(RamTarget);
+		if (NPC.wet) NPC.velocity = direction * 12; // + (direction * Timer / 20);
+		else return AlligatorAction.Idle;
+
+		if (distanceToTarget <= 3 * Consts.TILE_SIZE || Timer >= 720) return AlligatorAction.Chase;
 		
+		return AlligatorAction.Ram;
 	}
 
-	public void Bite() {
-		if (!NPC.HasValidTarget || NPC.Center.Distance(Main.player[NPC.target].Center) > 5 * Consts.TILE_SIZE) {  
-			State = AlligatorAction.Idle; 
-			return; 
-		}
-
-		if ((int)Timer % 90 == 0)
-			Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + new Vector2(NPC.width / 2 * NPC.spriteDirection, 0), Vector2.Zero, ProjectileID.EatersBite, 40, 2);
-		Timer++;
-		Timer %= 90;
+	public AlligatorAction Bite() {
+		return AlligatorAction.Idle;
 	}
+
+	public AlligatorAction UnrecognisedState() { return AlligatorAction.Idle; }
 
 	public override void FindFrame(int frameHeight) {
 		NPC.frame = new Rectangle(0, 0, NPC.width, NPC.height);
