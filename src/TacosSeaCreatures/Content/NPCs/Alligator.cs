@@ -107,6 +107,11 @@ public class Alligator : ModNPC {
 		}
 		
 		Player target = Main.player[NPC.target];
+		if (target.Distance(NPC.Center) > 40 * Consts.TILE_SIZE) {
+			State = AlligatorAction.Idle;
+			return;
+		}
+
 		Movement = (target.Center.X < NPC.Center.X) ? Direction.Right : Direction.Left;
 
 		NPC.velocity = NPC.Center.DirectionTo(target.Center + Vector2.UnitX * 4.5f * Consts.TILE_SIZE * (int)Movement) * 3;
