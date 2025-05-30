@@ -145,12 +145,15 @@ public class Alligator : ModNPC {
 	}
 
 	public void Bite() {
-		NPC.damage = 40;
-
 		if (!NPC.HasValidTarget || NPC.Center.Distance(Main.player[NPC.target].Center) > 5 * Consts.TILE_SIZE) {  
 			State = AlligatorAction.Idle; 
 			return; 
 		}
+
+		if ((int)Timer % 90 == 0)
+			Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center + new Vector2(NPC.width / 2 * NPC.spriteDirection, 0), Vector2.Zero, ProjectileID.EatersBite, 40, 2);
+		Timer++;
+		Timer %= 90;
 	}
 
 	public override void FindFrame(int frameHeight) {
