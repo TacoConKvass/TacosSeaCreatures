@@ -30,7 +30,7 @@ Thanks to:
     - Follow big Seahorse
   - Drops: Copper x1;
   - Stats: 10HP
-- [ ] Alligators
+- [x] Alligators
   - Aggressive
     - Swim around right below the waterline
     - Bite 40 DMG
@@ -38,15 +38,15 @@ Thanks to:
   - Drops: Gold x1; 2% chance - Shrimp Po' Boy
   - Stats: 100HP
 ### Items
-- [ ] Raw Fish
+- [x] Raw Fish
   - Cookable at the Cooking Pot
-- [ ] Crab Meat
+- [x] Crab Meat
   - Cookable at the Cooking Pot
 - [ ] Raft Mount
   - Float on water
   - Recipe: Wood x100; Rope x50; Workbench;
 ### Mechanic changes
-- [ ] Slimes
+- [x] Slimes
   - Don't spawn on the ground
   - Don't fall from the sky
   - Spawn above water surface inside of bubbles
