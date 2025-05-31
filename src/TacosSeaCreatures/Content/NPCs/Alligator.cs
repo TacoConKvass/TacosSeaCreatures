@@ -52,7 +52,7 @@ public class Alligator : ModNPC {
 	public override void OnSpawn(IEntitySource source) { RNG = 1; }
 		
 	public override void AI() {
-		NPC.damage = 0;
+		NPC.damage = 40;
 		State = State switch {
 			AlligatorAction.Idle => Idle(),
 			AlligatorAction.Chase => Chase(),
@@ -68,7 +68,7 @@ public class Alligator : ModNPC {
 
 	public AlligatorAction Idle() {
 		if (!NPC.wet) return AlligatorAction.Idle;
-
+		RNG = MathHelper.Clamp(RNG, 1f, float.MaxValue);
 		Timer++;
 		if ((int)Timer % (int)(360 * RNG) == 0 || Main.tile[(NPC.Center + (WallCheckOffset * (int)Movement)).ToTileCoordinates()].HasTile) {
 			Timer = 0; 
@@ -122,7 +122,6 @@ public class Alligator : ModNPC {
 			return AlligatorAction.Ram;
 		}
 
-		NPC.damage = 40;
 		float distanceToTarget = NPC.Center.Distance(RamTarget);
 
 		Vector2 direction = NPC.Center.DirectionTo(RamTarget);
