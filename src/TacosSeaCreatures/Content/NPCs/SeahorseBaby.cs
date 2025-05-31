@@ -33,11 +33,10 @@ public class SeahorseBaby : ModNPC {
 		foreach (NPC npc in Main.ActiveNPCs) {
 			if (npc.ModNPC is SeahorseAdult adult && NPC.Center.DistanceSQ(npc.Center) < distance && adult.AttachedBabies == 0) {
 				NPC.target = npc.whoAmI;
-				if (Main.netMode != NetmodeID.MultiplayerClient)
-					adult.AttachedBabies += 1;
 				Bobbing = adult.Bobbing.Reversed();
 			}
 		}
+		if (NPC.target != -1 && Main.netMode != NetmodeID.MultiplayerClient) (Main.npc[NPC.target].ModNPC as SeahorseAdult).AttachedBabies = 1;
 	}
 
 	public override void AI() {
@@ -68,11 +67,10 @@ public class SeahorseBaby : ModNPC {
 			foreach (NPC npc in Main.ActiveNPCs) {
 				if (npc.ModNPC is SeahorseAdult adult && NPC.Center.DistanceSQ(npc.Center) < distance && adult.AttachedBabies == 0) {
 					NPC.target = npc.whoAmI;
-					if (Main.netMode != NetmodeID.MultiplayerClient)
-						adult.AttachedBabies += 1;
 					Bobbing = adult.Bobbing.Reversed();
 				}
 			}
+			if (NPC.target != -1 && Main.netMode != NetmodeID.MultiplayerClient) (Main.npc[NPC.target].ModNPC as SeahorseAdult).AttachedBabies = 1;
 		}
 
 		NPC.velocity = BobbingVector;
