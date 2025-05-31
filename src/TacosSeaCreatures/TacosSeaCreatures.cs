@@ -11,6 +11,7 @@ public class TacosSeaCreatures : Mod {
 		source.AddDirectoryRedirect("Items", "Assets/Items");
 		source.AddDirectoryRedirect("NPCs", "Assets/NPCs");
 		source.AddDirectoryRedirect("Projectiles", "Assets/Projectiles");
+		source.AddDirectoryRedirect("Misc", "Assets/Misc");
 		return source;
 	}
 }
