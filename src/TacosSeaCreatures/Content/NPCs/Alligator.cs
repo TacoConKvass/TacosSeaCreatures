@@ -110,7 +110,6 @@ public class Alligator : ModNPC {
 		Player player = Main.player[NPC.target];
 		float distance = NPC.Center.Distance(player.Center);
 
-		Main.NewText(RamTarget);
 		if (!NPC.HasValidTarget) return AlligatorAction.Idle;
 		if (distance > 20f * Consts.TILE_SIZE) return AlligatorAction.Chase;
 

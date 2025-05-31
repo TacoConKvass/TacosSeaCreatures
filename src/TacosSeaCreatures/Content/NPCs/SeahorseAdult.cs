@@ -90,7 +90,6 @@ public class SeahorseAdult : ModNPC {
 		if ((int)Timer % BOBBING_TIMER == 0) Bobbing = Bobbing.Reversed();
 		
 		if ((int)Timer % IDLE_MOVEMENT_TIMER == 0) {
-			Main.NewText("Move!");
 			NPC.target = -1;
 			TargetPosition = NPC.Center + (Vector2.UnitX.RotatedByRandom(MathHelper.TwoPi) * 12 * Consts.TILE_SIZE * Main.rand.NextFloat(.8f, 1.2f));
 			Point tile = TargetPosition.ToTileCoordinates();
