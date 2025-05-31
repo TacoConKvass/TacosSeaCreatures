@@ -61,7 +61,10 @@ public class Alligator : ModNPC {
 			_ => UnrecognisedState()
 		};
 
-		if (!NPC.wet) NPC.rotation = NPC.velocity.ToRotation();
+		if (!NPC.wet) {
+			NPC.GravityMultiplier *= 2;
+			NPC.rotation = NPC.velocity.ToRotation();
+		}
 		else NPC.rotation = 0;
 		NPC.spriteDirection = NPC.velocity.X <= 0 ? 1 : -1;
 	}
