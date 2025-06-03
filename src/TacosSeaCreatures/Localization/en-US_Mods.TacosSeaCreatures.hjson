@@ -24,3 +24,10 @@ NPCs: {
 }
 
 Projectiles.Bubble.DisplayName: Bubble
+
+Buffs: {
+	RaftMount_Buff: {
+		DisplayName: Raft Mount_ Buff
+		Description: Mods.TacosSeaCreatures.Buffs.RaftMount_Buff.Description
+	}
+}
