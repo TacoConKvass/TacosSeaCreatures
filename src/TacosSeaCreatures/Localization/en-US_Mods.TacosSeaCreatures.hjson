@@ -5,8 +5,8 @@ Items: {
 	}
 
 	RaftMount_Item: {
-		DisplayName: Raft Mount_ Item
-		Tooltip: ""
+		DisplayName: Raft
+		Tooltip: "Summon a boat to allow for easy travel on water"
 	}
 
 	RawFish: {
@@ -19,15 +19,15 @@ NPCs: {
 	Alligator.DisplayName: Alligator
 	Crab.DisplayName: Crab
 	Fish.DisplayName: Fish
-	SeahorseAdult.DisplayName: Seahorse Adult
-	SeahorseBaby.DisplayName: Seahorse Baby
+	SeahorseAdult.DisplayName: Seahorse
+	SeahorseBaby.DisplayName: Baby Seahorse
 }
 
 Projectiles.Bubble.DisplayName: Bubble
 
 Buffs: {
 	RaftMount_Buff: {
-		DisplayName: Raft Mount_ Buff
-		Description: Mods.TacosSeaCreatures.Buffs.RaftMount_Buff.Description
+		DisplayName: Raft
+		Description: You are being held up on the water by a mysterious raft
 	}
 }
