@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
-using System.Collections.Generic;
+using System;
 using TacosSeaCreatures.Core;
 using Terraria;
 using Terraria.DataStructures;
@@ -35,9 +35,8 @@ public class GlobalSlime : GlobalNPC {
 	public override bool PreAI(NPC npc) {
 		if (InABubble) {
 			npc.ai[0]++;
-			if ((int)npc.ai[0] % 50 == 0) Bobbing = Bobbing.Reversed();
 			
-			npc.velocity = Main.tile[npc.Center.ToTileCoordinates() + new Point(0, 2)].LiquidAmount > 0 ? -3 * Vector2.UnitY : BobbingVector;
+			npc.velocity = Main.tile[npc.Center.ToTileCoordinates() + new Point(0, 2)].LiquidAmount > 0 ? -3 * Vector2.UnitY : BobbingVector * MathF.Cos(npc.ai[0] / MathHelper.TwoPi / 3);
 			npc.target = npc.FindClosestPlayer();
 			if (npc.HasValidTarget) {
 				npc.velocity.X = npc.Center.DirectionTo(Main.player[npc.target].Center).X > 0 ? .5f : -.5f;
