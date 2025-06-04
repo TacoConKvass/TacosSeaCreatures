@@ -159,6 +159,10 @@ public class SeahorseAdult : ModNPC {
 	public override void FindFrame(int frameHeight) {
 		NPC.frame = VariantRect;
 	}
+
+	public override float SpawnChance(NPCSpawnInfo spawnInfo) {
+		return spawnInfo.Water && spawnInfo.SpawnTileY < Main.worldSurface ? .1f : 0;
+	}
 }
 
 public enum SeahorseAction {

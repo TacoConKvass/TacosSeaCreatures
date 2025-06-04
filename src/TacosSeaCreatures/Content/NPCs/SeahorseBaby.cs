@@ -95,4 +95,8 @@ public class SeahorseBaby : ModNPC {
 	public override void FindFrame(int frameHeight) {
 		NPC.frame = new Rectangle(0, 0, NPC.width, NPC.height);
 	}
+
+	public override float SpawnChance(NPCSpawnInfo spawnInfo) {
+		return spawnInfo.Water && spawnInfo.SpawnTileY < Main.worldSurface ? .1f : 0;
+	}
 }

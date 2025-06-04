@@ -84,4 +84,8 @@ public class Fish : ModNPC {
 		Main.EntitySpriteDraw(TextureAssets.Npc[Type].Value, NPC.Center - screenPos, NPC.frame, drawColor, NPC.rotation + MathHelper.PiOver4, NPC.frame.Center(), 1f, SpriteEffects.None);
 		return false;
 	}
+
+	public override float SpawnChance(NPCSpawnInfo spawnInfo) {
+		return spawnInfo.Water && spawnInfo.SpawnTileY < Main.worldSurface ? .1f : 0;
+	}
 }

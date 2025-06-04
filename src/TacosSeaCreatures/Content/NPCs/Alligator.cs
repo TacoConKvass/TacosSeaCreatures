@@ -150,6 +150,10 @@ public class Alligator : ModNPC {
 		Main.EntitySpriteDraw(TextureAssets.Npc[Type].Value, NPC.Center - screenPos, NPC.frame, drawColor, NPC.rotation, NPC.frame.Center(), NPC.scale, SpriteEffects.None);
 		return false;
 	}
+
+	public override float SpawnChance(NPCSpawnInfo spawnInfo) {
+		return spawnInfo.Water && spawnInfo.SpawnTileY < Main.worldSurface ? .1f : 0;
+	}
 }
 
 public enum AlligatorAction {

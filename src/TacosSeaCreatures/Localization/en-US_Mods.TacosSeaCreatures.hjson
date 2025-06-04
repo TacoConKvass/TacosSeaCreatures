@@ -6,7 +6,7 @@ Items: {
 
 	RaftMount_Item: {
 		DisplayName: Raft
-		Tooltip: "Summon a boat to allow for easy travel on water"
+		Tooltip: Summon a boat to allow for easy travel on water
 	}
 
 	RawFish: {

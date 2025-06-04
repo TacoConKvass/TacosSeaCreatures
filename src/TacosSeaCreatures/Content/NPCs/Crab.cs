@@ -56,4 +56,8 @@ public class Crab : ModNPC {
 	public override void ModifyNPCLoot(NPCLoot npcLoot) {
 		npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<CrabMeat>()));
 	}
+
+	public override float SpawnChance(NPCSpawnInfo spawnInfo) {
+		return spawnInfo.Water && spawnInfo.SpawnTileY < Main.worldSurface ? .1f : 0;
+	}
 }
