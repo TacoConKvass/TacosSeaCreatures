@@ -11,7 +11,8 @@ namespace TacosSeaCreatures.NPCs;
 
 public class Alligator : ModNPC {
 	public override void SetDefaults() {
-		NPC.Size = new Vector2(95, 25);
+		Main.npcFrameCount[Type] = 5;
+		NPC.Size = new Vector2(182, 35);
 
 		NPC.lifeMax = 100;
 
@@ -53,6 +54,14 @@ public class Alligator : ModNPC {
 		
 	public override void AI() {
 		NPC.damage = 40;
+
+		if (!NPC.wet) {
+			NPC.GravityMultiplier *= 2;
+			NPC.rotation = NPC.velocity.ToRotation();
+		}
+		else NPC.rotation = 0;
+		NPC.spriteDirection = NPC.velocity.X < 0 ? 1 : -1;
+
 		State = State switch {
 			AlligatorAction.Idle => Idle(),
 			AlligatorAction.Chase => Chase(),
@@ -60,13 +69,6 @@ public class Alligator : ModNPC {
 			AlligatorAction.Bite => Bite(),
 			_ => UnrecognisedState()
 		};
-
-		if (!NPC.wet) {
-			NPC.GravityMultiplier *= 2;
-			NPC.rotation = NPC.velocity.ToRotation();
-		}
-		else NPC.rotation = 0;
-		NPC.spriteDirection = NPC.velocity.X <= 0 ? 1 : -1;
 	}
 
 	public AlligatorAction Idle() {
@@ -121,6 +123,7 @@ public class Alligator : ModNPC {
 		if (Timer < 45) {
 			if (NPC.wet) NPC.velocity = Vector2.Zero;
 			Vector2 target = NPC.Center.DirectionTo(player.Center);
+			NPC.spriteDirection = target.X > 0 ? -1 : 1;
 			RamTarget = player.Center + (target * 15 * Consts.TILE_SIZE);
 			return AlligatorAction.Ram;
 		}
@@ -143,11 +146,14 @@ public class Alligator : ModNPC {
 	public AlligatorAction UnrecognisedState() { return AlligatorAction.Idle; }
 
 	public override void FindFrame(int frameHeight) {
-		NPC.frame = new Rectangle(0, 0, NPC.width, NPC.height);
+		NPC.frameCounter++;
+		NPC.frameCounter %= 25;
+		NPC.frame = new Rectangle(0, (int)((NPC.frameCounter) / 5) * frameHeight, NPC.width, NPC.height);
 	}
 
 	public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
-		Main.EntitySpriteDraw(TextureAssets.Npc[Type].Value, NPC.Center - screenPos, NPC.frame, drawColor, NPC.rotation, NPC.frame.Center(), NPC.scale, SpriteEffects.None);
+		SpriteEffects effects = NPC.spriteDirection > 0 ? SpriteEffects.None: SpriteEffects.FlipHorizontally;
+		Main.EntitySpriteDraw(TextureAssets.Npc[Type].Value, NPC.Center - screenPos, NPC.frame, drawColor, NPC.rotation, new Vector2(NPC.width / 2, 35 /2), NPC.scale, effects);
 		return false;
 	}
 
