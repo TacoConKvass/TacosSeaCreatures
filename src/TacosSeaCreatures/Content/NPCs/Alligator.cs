@@ -158,7 +158,7 @@ public class Alligator : ModNPC {
 	}
 
 	public override float SpawnChance(NPCSpawnInfo spawnInfo) {
-		return spawnInfo.Water && spawnInfo.SpawnTileY < Main.worldSurface ? .1f : 0;
+		return spawnInfo.Water && spawnInfo.Player.ZoneJungle && spawnInfo.SpawnTileY < Main.worldSurface ? .1f : 0;
 	}
 }
 
