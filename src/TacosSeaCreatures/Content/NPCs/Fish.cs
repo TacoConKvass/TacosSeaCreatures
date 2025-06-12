@@ -12,7 +12,7 @@ namespace TacosSeaCreatures.NPCs;
 
 public class Fish : ModNPC {
 	public override void SetDefaults() {
-		NPC.Size = new Vector2(30, 20);
+		NPC.Size = new Vector2(46, 24);
 
 		NPC.lifeMax = 20;
 
@@ -23,7 +23,7 @@ public class Fish : ModNPC {
 	}
 
 	public Rectangle VariantRect;
-	internal static int VariantCount = 0;
+	internal static int VariantCount = 12;
 	
 	public ref float Timer => ref NPC.ai[0];
 	public Direction Bobbing = Direction.Up;
@@ -34,7 +34,7 @@ public class Fish : ModNPC {
 
 	public override void OnSpawn(IEntitySource source) {
 		int variant = Main.rand.Next(0, VariantCount);
-		VariantRect = new Rectangle(variant * NPC.width, 0, NPC.width, NPC.height);
+		VariantRect = new Rectangle(0, variant * 24, NPC.width, NPC.height);
 	}
 
 	public override void AI() {
@@ -57,6 +57,10 @@ public class Fish : ModNPC {
 		if (!Collision.CanHitLine(NPC.Center, 3, 3, ahead, 3, 3) || Main.tile[tile].LiquidAmount == 0) 
 			NPC.rotation += TURN_RATE * 8;
 
+		if (!WorldGen.InWorld((int)NPC.Center.X / 16, (int)NPC.Center.Y / 16, 30)) {
+			NPC.EncourageDespawn(0);
+		}
+
 		Vector2 direction = NPC.Center.DirectionTo(Main.player[NPC.FindClosestPlayer(out float distance)].Center);
 		if (distance < 10 * Consts.TILE_SIZE && NPC.wet) {
 			if (NPC.velocity.X > 0 && direction.X > 0) NPC.rotation += TURN_RATE * (direction.Y > 0 ? -1 : 1);
@@ -78,10 +82,17 @@ public class Fish : ModNPC {
 
 	public override void FindFrame(int frameHeight) {
 		NPC.frame = VariantRect;
+		NPC.frameCounter++;
+		NPC.frame.X = ((int)(NPC.frameCounter % 12) / 6) * NPC.width;
 	}
 
 	public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
-		Main.EntitySpriteDraw(TextureAssets.Npc[Type].Value, NPC.Center - screenPos, NPC.frame, drawColor, NPC.rotation + MathHelper.PiOver4, NPC.frame.Center(), 1f, SpriteEffects.None);
+		SpriteEffects effects = SpriteEffects.FlipHorizontally;
+		float rotation = NPC.rotation % MathHelper.TwoPi;
+		if (rotation > MathHelper.PiOver2 && rotation < MathHelper.Pi + MathHelper.PiOver2) {
+			effects = SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically;
+		}
+		Main.EntitySpriteDraw(TextureAssets.Npc[Type].Value, NPC.Center - screenPos, NPC.frame, drawColor, NPC.rotation + MathHelper.PiOver4, NPC.Size / 2, 1f, effects);
 		return false;
 	}
 
