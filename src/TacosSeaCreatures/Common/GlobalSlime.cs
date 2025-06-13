@@ -11,7 +11,7 @@ using Terraria.ModLoader;
 namespace TacosSeaCreatures.Common;
 
 public class GlobalSlime : GlobalNPC {
-	public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => lateInstantiation && entity.aiStyle == NPCAIStyleID.Slime;
+	public override bool AppliesToEntity(NPC entity, bool lateInstantiation) => lateInstantiation && entity.aiStyle == NPCAIStyleID.Slime && entity.damage > 0;
 
 	public override bool InstancePerEntity => true;
 
@@ -58,8 +58,6 @@ public class GlobalSlime : GlobalNPC {
 		if (InABubble) {
 			int frameHeight = (BubbleTexture.Value.Height / 6);
 			int width = BubbleTexture.Value.Width;
-			Main.NewText(npc.ai[0]);
-			//Main.NewText((int)(((int)npc.ai[0] % 120) / 20) * frameHeight);
 			Rectangle sourceRectangle = new Rectangle(0, (int)(((int)npc.ai[0] % 120) / 20) * frameHeight, width, frameHeight - 1);
 			Main.EntitySpriteDraw(BubbleTexture.Value, npc.Center - screenPos, sourceRectangle, drawColor, 0, new Vector2(width /2, frameHeight / 2), npc.scale, SpriteEffects.None);
 		}
