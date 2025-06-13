@@ -1,16 +1,22 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using TacosSeaCreatures.Core;
 using TacosSeaCreatures.Projectiles;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
 namespace TacosSeaCreatures.NPCs;
 
 public class SeahorseAdult : ModNPC {
+	public override void SetStaticDefaults() {
+		Main.npcFrameCount[Type] = 10;
+	}
+
 	public override void SetDefaults() {
-		NPC.Size = new Vector2(30, 45);
+		NPC.Size = new Vector2(40, 56);
 
 		NPC.lifeMax = 40;
 
@@ -59,7 +65,7 @@ public class SeahorseAdult : ModNPC {
 	public const int SHOOT_DISENGAGE_DISTANCE = 15 * Consts.TILE_SIZE;
 
 	public override void OnSpawn(IEntitySource source) {
-		int variant = Main.rand.Next(0, VariantCount);
+		int variant = Main.rand.Next(0, 4);
 		VariantRect = new Rectangle(variant * NPC.width, 0, NPC.width, NPC.height);
 	}
 
@@ -132,7 +138,7 @@ public class SeahorseAdult : ModNPC {
 			NPC.velocity += BobbingVector * 5;
 		}
 		NPC.velocity += BobbingVector;
-		NPC.spriteDirection = NPC.velocity.X <= 0 ? 1 : -1;
+		NPC.spriteDirection = NPC.velocity.X <= 0 ? -1 : 1;
 	}
 
 	public void Shoot() {
@@ -144,12 +150,12 @@ public class SeahorseAdult : ModNPC {
 		Player player = Main.player[NPC.target];
 		if (!NPC.HasValidTarget || NPC.Center.Distance(player.Center) > SHOOT_DISENGAGE_DISTANCE) State = SeahorseAction.Idle;
 
-		NPC.spriteDirection = NPC.Center.X > player.Center.X ? 1 : -1;
+		NPC.spriteDirection = NPC.Center.X > player.Center.X ? -1 : 1;
 
 		if ((int)Timer % 120 == 0 || (int)Timer % 130 == 0 || (int)Timer % 135 == 0) {
 			for (int i = 0; i < 3; i++) {
 				RNG = Main.rand.NextFloat(-.25f, .25f);
-				Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center, NPC.Center.DirectionTo(player.Center).RotatedBy(RNG) * 20, ModContent.ProjectileType<Bubble>(), 4, 1f);
+				Projectile.NewProjectile(NPC.GetSource_FromAI(), NPC.Center - Vector2.UnitY * Consts.TILE_SIZE, NPC.Center.DirectionTo(player.Center).RotatedBy(RNG) * 20, ModContent.ProjectileType<Bubble>(), 4, 1f);
 			}
 		}
 
@@ -157,7 +163,16 @@ public class SeahorseAdult : ModNPC {
 	}
 
 	public override void FindFrame(int frameHeight) {
-		NPC.frame = VariantRect;
+		NPC.frameCounter++;
+		NPC.frameCounter %= 30;
+		bool shoot = State == SeahorseAction.Shoot;
+		NPC.frame = new Rectangle(VariantRect.X, ((shoot ? 4 : 0) + (int)(NPC.frameCounter / 5)) * frameHeight, NPC.width, frameHeight);
+	}
+
+	public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
+		SpriteEffects effects = NPC.spriteDirection < 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+		Main.EntitySpriteDraw(TextureAssets.Npc[Type].Value, NPC.Center - screenPos, NPC.frame, drawColor, NPC.rotation, NPC.Size / 2, NPC.scale, effects);
+		return false;
 	}
 
 	public override float SpawnChance(NPCSpawnInfo spawnInfo) {
