@@ -42,7 +42,7 @@ Thanks to:
   - Cookable at the Cooking Pot
 - [x] Crab Meat
   - Cookable at the Cooking Pot
-- [ ] Raft Mount
+- [x] Raft Mount
   - Float on water
   - Recipe: Wood x100; Rope x50; Workbench;
 ### Mechanic changes
@@ -55,4 +55,4 @@ Thanks to:
 ## Licensing
 The code is provided under the GNU GPL 3.0 License
 
-Assets (inlcuding \_) are property of their creators (\_), and all rights are reserved to them.
+Assets (inlcuding every sprite in the Assets directory) are property of their creators (@calopis on Discord), and all rights are reserved to them.
