@@ -1,7 +1,12 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using TacosSeaCreatures.Core;
 using Terraria;
+using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.GameContent.UI.Elements;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -17,7 +22,7 @@ public class RaftMount : ModMount {
 		MountData.blockExtraJumps = true; // Determines whether or not you can use a double jump (like cloud in a bottle) while in the mount.
 		MountData.constantJump = true; // Allows you to hold the jump button down.
 		MountData.heightBoost = 0; // Height between the mount and the ground
-		MountData.fallDamage = 0; // Fall damage multiplier.
+		MountData.fallDamage = 1; // Fall damage multiplier.
 		MountData.runSpeed = .1f; // The speed of the mount
 		MountData.dashSpeed = 0; // The speed the mount moves when in the state of dashing.
 		MountData.flightTimeMax = 0; // The amount of time in frames a mount can be in the state of flying.
@@ -34,7 +39,7 @@ public class RaftMount : ModMount {
 		MountData.totalFrames = 1; // Amount of animation frames for the mount
 		MountData.playerYOffsets = Enumerable.Repeat(0, MountData.totalFrames).ToArray(); // Fills an array with values for less repeating code
 		MountData.xOffset = 0;
-		MountData.yOffset = 0;
+		MountData.yOffset = Consts.TILE_SIZE / 3;
 		MountData.playerHeadOffset = 0;
 		MountData.bodyFrame = 3;
 		// Frame counts
@@ -46,8 +51,8 @@ public class RaftMount : ModMount {
 		MountData.swimFrameCount = 1;
 
 		if (!Main.dedServ) {
-			MountData.textureWidth = MountData.backTexture.Width() + 20;
-			MountData.textureHeight = MountData.backTexture.Height();
+			MountData.textureWidth = MountData.frontTexture.Width();
+			MountData.textureHeight = MountData.frontTexture.Height();
 		}
 	}
 
@@ -65,9 +70,17 @@ public class RaftMount : ModMount {
 		if (Main.tile[player.Center.ToTileCoordinates() + new Point(0, 1)].LiquidAmount > 0) {
 			player.velocity.Y = -1;
 			if (player.wet) player.velocity.Y = -5;
-			MountData.runSpeed = 15f;
+			MountData.runSpeed = 8f;
 		}
 		else MountData.runSpeed = 1;
+	}
+
+	public override bool Draw(List<DrawData> playerDrawData, int drawType, Player drawPlayer, ref Texture2D texture, ref Texture2D glowTexture, ref Vector2 drawPosition, ref Rectangle frame, ref Color drawColor, ref Color glowColor, ref float rotation, ref SpriteEffects spriteEffects, ref Vector2 drawOrigin, ref float drawScale, float shadow) {
+		if (drawType == 0) {
+			Texture2D m_texture = MountData.frontTexture.Value;
+			playerDrawData.Add(new DrawData(m_texture, drawPlayer.Center, new Rectangle(0, 0, m_texture.Width, m_texture.Height), drawColor));
+		}
+		return true;
 	}
 }
 
