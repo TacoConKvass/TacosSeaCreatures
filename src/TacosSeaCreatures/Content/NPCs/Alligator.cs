@@ -1,9 +1,11 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using TacosSeaCreatures.Core;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.GameContent;
+using Terraria.GameContent.ItemDropRules;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -153,12 +155,24 @@ public class Alligator : ModNPC {
 
 	public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 		SpriteEffects effects = NPC.spriteDirection > 0 ? SpriteEffects.None: SpriteEffects.FlipHorizontally;
+		float rotation = NPC.rotation % MathHelper.TwoPi;
+		if (rotation < 0) {
+			rotation += MathHelper.TwoPi;
+		}
+		if (rotation > MathHelper.PiOver2 && rotation < MathHelper.Pi + MathHelper.PiOver2) {
+			effects = SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically;
+		}
+		
 		Main.EntitySpriteDraw(TextureAssets.Npc[Type].Value, NPC.Center - screenPos, NPC.frame, drawColor, NPC.rotation, new Vector2(NPC.width / 2, 35 /2), NPC.scale, effects);
 		return false;
 	}
 
 	public override float SpawnChance(NPCSpawnInfo spawnInfo) {
 		return spawnInfo.Water && spawnInfo.Player.ZoneJungle && spawnInfo.SpawnTileY < Main.worldSurface ? .1f : 0;
+	}
+
+	public override void ModifyNPCLoot(NPCLoot npcLoot) {
+		npcLoot.Add(ItemDropRule.Common(ItemID.ShrimpPoBoy, 50));
 	}
 }
 
