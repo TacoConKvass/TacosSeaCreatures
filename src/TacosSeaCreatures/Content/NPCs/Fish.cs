@@ -89,6 +89,9 @@ public class Fish : ModNPC {
 	public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
 		SpriteEffects effects = SpriteEffects.FlipHorizontally;
 		float rotation = NPC.rotation % MathHelper.TwoPi;
+		if (rotation < 0) {
+			rotation += MathHelper.TwoPi;
+		}
 		if (rotation > MathHelper.PiOver2 && rotation < MathHelper.Pi + MathHelper.PiOver2) {
 			effects = SpriteEffects.FlipHorizontally | SpriteEffects.FlipVertically;
 		}
