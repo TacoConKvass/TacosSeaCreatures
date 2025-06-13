@@ -1,7 +1,9 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using TacosSeaCreatures.Core;
 using Terraria;
 using Terraria.DataStructures;
+using Terraria.GameContent;
 using Terraria.ID;
 using Terraria.ModLoader;
 
@@ -9,7 +11,7 @@ namespace TacosSeaCreatures.NPCs;
 
 public class SeahorseBaby : ModNPC {
 	public override void SetDefaults() {
-		NPC.Size = new Vector2(20, 30);
+		NPC.Size = new Vector2(22, 30);
 
 		NPC.lifeMax = 10;
 
@@ -37,6 +39,8 @@ public class SeahorseBaby : ModNPC {
 			}
 		}
 		if (NPC.target != -1 && Main.netMode != NetmodeID.MultiplayerClient) (Main.npc[NPC.target].ModNPC as SeahorseAdult).AttachedBabies = 1;
+
+		NPC.ai[2] = Main.rand.Next(0, 4);
 	}
 
 	public override void AI() {
@@ -79,9 +83,11 @@ public class SeahorseBaby : ModNPC {
 	public void Following(NPC parent) {
 		Bobbing = (parent.ModNPC as SeahorseAdult).Bobbing;
 
-		Vector2 targetPosition = parent.Center + Vector2.UnitX * TARGET_DISTANCE_FROM_PARENT * parent.spriteDirection;
+		Vector2 targetPosition = parent.Center + Vector2.UnitX * TARGET_DISTANCE_FROM_PARENT * -parent.spriteDirection;
 		targetPosition -= BobbingVector * FOLLOWING_BOBBING_OFFSET;
 		NPC.velocity = NPC.Center.DirectionTo(targetPosition) * parent.velocity.Length();
+		if (NPC.velocity.X > 0) NPC.spriteDirection = 1;
+		else if (NPC.velocity.X < 0) NPC.spriteDirection = -1;
 	}
 
 	public override void OnKill() {
@@ -93,7 +99,14 @@ public class SeahorseBaby : ModNPC {
 	}
 
 	public override void FindFrame(int frameHeight) {
-		NPC.frame = new Rectangle(0, 0, NPC.width, NPC.height);
+		NPC.frameCounter++;
+		NPC.frame = new Rectangle((int)NPC.ai[2] * NPC.width, (int)(((NPC.frameCounter) % 18) / 6) * NPC.height, NPC.width, NPC.height);
+	}
+
+	public override bool PreDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor) {
+		SpriteEffects effects = NPC.spriteDirection < 0 ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+		Main.EntitySpriteDraw(TextureAssets.Npc[Type].Value, NPC.Center - screenPos, NPC.frame, drawColor, NPC.rotation, NPC.Size / 2, NPC.scale, effects);
+		return false;
 	}
 
 	public override float SpawnChance(NPCSpawnInfo spawnInfo) {
