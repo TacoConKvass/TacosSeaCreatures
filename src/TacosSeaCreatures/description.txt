@@ -1,4 +1,6 @@
-A mod made for Aphrofluff, adding several sea creatures for their "stranded on an island" video
+This mod adds several water creatures.
+
+Commissioned by: Aphrofluff
 
 Thanks to:
 - steviegt6 / tomat - SmartContentSource implementation
