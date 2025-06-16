@@ -13,6 +13,11 @@ Items: {
 		DisplayName: Raw Fish
 		Tooltip: ""
 	}
+
+	JellyGoo: {
+		DisplayName: Jelly Goo
+		Tooltip: ""
+	}
 }
 
 NPCs: {
@@ -21,6 +26,7 @@ NPCs: {
 	Fish.DisplayName: Fish
 	SeahorseAdult.DisplayName: Seahorse
 	SeahorseBaby.DisplayName: Baby Seahorse
+	Jellyfish.DisplayName: Jellyfish
 }
 
 Projectiles.Bubble.DisplayName: Bubble

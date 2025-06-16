@@ -100,6 +100,6 @@ public class Fish : ModNPC {
 	}
 
 	public override float SpawnChance(NPCSpawnInfo spawnInfo) {
-		return spawnInfo.Water && spawnInfo.SpawnTileY < Main.worldSurface ? .1f : 0;
+		return spawnInfo.Water && spawnInfo.SpawnTileY < Main.worldSurface ? .3f : 0;
 	}
 }
