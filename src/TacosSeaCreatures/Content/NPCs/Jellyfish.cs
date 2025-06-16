@@ -53,6 +53,6 @@ public class Jellyfish : ModNPC {
 	}
 
 	public override void ModifyNPCLoot(NPCLoot npcLoot) {
-		npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyGoo>(), 1, 1, 3));
+		npcLoot.Add(ItemDropRule.Common(ModContent.ItemType<JellyGoo>(), 1, 1, 2));
 	}
 }
