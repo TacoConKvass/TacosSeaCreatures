@@ -49,7 +49,7 @@ public class Jellyfish : ModNPC {
 	}
 
 	public override float SpawnChance(NPCSpawnInfo spawnInfo) {
-		return spawnInfo.Water && spawnInfo.SpawnTileY < Main.worldSurface * 16 ? 0.1f : 0f;
+		return spawnInfo.Water && spawnInfo.SpawnTileY < Main.worldSurface ? 0.1f : 0f;
 	}
 
 	public override void ModifyNPCLoot(NPCLoot npcLoot) {
