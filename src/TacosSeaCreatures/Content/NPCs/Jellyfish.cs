@@ -1,5 +1,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TacosSeaCreatures.Core;
 using TacosSeaCreatures.Items;
 using Terraria;
 using Terraria.DataStructures;
@@ -32,6 +33,7 @@ public class Jellyfish : ModNPC {
 	}
 
 	public override void AI() {
+		if ((int)NPC.ai[1] == 1 && NPC.HasValidTarget && NPC.Center.Distance(Main.player[NPC.target].Center) < 3 * Consts.TILE_SIZE) NPC.ai[1] = 0;
 		if ((int)NPC.ai[1] == 1) NPC.damage = 40;
 		else NPC.damage = 0;
 	}
